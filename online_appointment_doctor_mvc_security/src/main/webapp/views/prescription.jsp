@@ -17,8 +17,53 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet"  href="../css/style.css"/>
-<title>Home Page</title>
+<title>Feedback</title>
   </head>
+  <style>
+.jumbotron {
+    padding:90px 30px 90px 30px;
+    margin:0px 0px 50px 0px;
+    background: black ;
+    color: white;
+    text-align: center;
+    font-family: "Verdana";
+}
+textarea, select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  box-sizing: border-box;
+  font-family: "Verdana";
+  font-size: 16px;
+}
+input[type=submit] {
+  width: 30%;
+  background-color: white;
+  color: black;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: 3px solid #f2b636;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: "Verdana";
+  font-size: 16px;
+}
+input[type=submit]:hover {
+  background-color: #f2b636;
+}
+#form{
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px 400px;
+  font-family: "Verdana";
+  font-size: 16px;
+}
+</style>
+  
+  
   <body style="text-align:center;">
     
     
@@ -33,7 +78,7 @@
   <div class="collapse navbar-collapse " id="navbarNav">
     <ul class="navbar-nav ml-auto text-uppercase">
       <li class="nav-item active">
-        <a class="nav-link" href="#">DoctorHome<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/doctor/processlogin">DoctorHome<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/feedback">Feedback</a>
@@ -49,23 +94,15 @@
 	
 	  <p><header class="jumbotron">
                     <h1>Welcome Doctor ${name}</h1>
+                    <h1>Prescription</h1>
     </header> </p>
+	<form action="/send" method="post">
+		<input type="hidden" id="bookId" name="bookId" value=${bookId}>
+		<label for="Prescription">Advice for appointment ${bookId}</label>
+    	<textarea id="message" name="message" rows="4" cols="50"></textarea>
+  		<input type="submit" value="Send" />
+	</form>
 	
-	<table border="2" width="70%" cellpadding="2" align="center">
-	<tr><th>BookId</th><th>DoctorName</th><th>PatientName</th><th>Payment</th><th>Status</th><th>DateTime</th><th>Treat</th><th>Delete</th></tr>
-    <c:forEach var="apt" items="${list}"> 
-    <tr>
-    <td><a href="/prescription/${apt.bookId}">${apt.bookId}</a></td>
-    <td>${apt.doctorName}</td>
-    <td>${apt.patientName}</td>
-    <td>${apt.payment}</td>
-    <td>${apt.status}</td>
-    <td>${apt.dateTime}</td>
-    <td><button class="button button1"><a href="/doctor/treating/${apt.bookId}" >Treat</a></button></td>
-   <td><button class="button button1"><a href="/doctor/delete/${apt.bookId}" >Delete</a></button></td>
-    </tr>
-    </c:forEach>
-    </table>
     <br/>
 	
 

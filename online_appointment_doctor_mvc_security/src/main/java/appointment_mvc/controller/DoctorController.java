@@ -49,8 +49,47 @@ public class DoctorController {
 	{
 		return "login";
 	}
-	
 
+	@GetMapping("/feedback")
+	public String feedback(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		DoctorEntity doctor = (DoctorEntity) auth.getPrincipal();
+		List<Message> m = restTemplate.getForObject(DOCTOR_MS_URL+"message/"+doctor.getName(),List.class, HttpMethod.GET);
+		model.addAttribute("name", doctor.getName());
+		model.addAttribute("messages", m);
+		return "feedback";
+	}
+	
+	@GetMapping("/prescription/{bookId}")
+	public String prescription(@PathVariable("bookId") int bookId, Model m) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		DoctorEntity name = (DoctorEntity) auth.getPrincipal();
+		Appointment appointment = restTemplate.getForObject(DOCTOR_MS_URL+"appointment/"+bookId,Appointment.class);
+		if(!appointment.getDoctorName().equals(name.getName())) {
+			return "unauthorized";
+		}
+		m.addAttribute("bookId", bookId);
+		m.addAttribute("name", name.getName());
+		return "prescription";
+	}
+	
+	@PostMapping("/send")
+	public String send(@RequestParam("message") String message, @RequestParam("bookId") int bookId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		DoctorEntity name = (DoctorEntity) auth.getPrincipal();
+		Appointment appointment = restTemplate.getForObject(DOCTOR_MS_URL+"appointment/"+bookId,Appointment.class);
+		if(!appointment.getDoctorName().equals(name.getName())) {
+			return "unauthorized";
+		}
+		Message m = new Message();
+		m.setBookId(bookId);
+		m.setMsg(message); 
+		m.setSender(appointment.getDoctorName());
+		m.setReceiver(appointment.getPatientName());
+		String s = restTemplate.postForObject(DOCTOR_MS_URL+"message/add",m, String.class);
+		System.out.println(s); 
+		return "redirect:/doctor/processlogin";
+	}
 	
 	@GetMapping("/doctor/processlogin")
 	public String loginProcess(Model model)

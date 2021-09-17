@@ -17,7 +17,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet"  href="../css/style.css"/>
-<title>Home Page</title>
+<title>Feedback</title>
   </head>
   <body style="text-align:center;">
     
@@ -33,7 +33,7 @@
   <div class="collapse navbar-collapse " id="navbarNav">
     <ul class="navbar-nav ml-auto text-uppercase">
       <li class="nav-item active">
-        <a class="nav-link" href="#">DoctorHome<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/doctor/processlogin">DoctorHome<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/feedback">Feedback</a>
@@ -49,20 +49,16 @@
 	
 	  <p><header class="jumbotron">
                     <h1>Welcome Doctor ${name}</h1>
+                    <h1>Feedbacks</h1>
     </header> </p>
 	
 	<table border="2" width="70%" cellpadding="2" align="center">
-	<tr><th>BookId</th><th>DoctorName</th><th>PatientName</th><th>Payment</th><th>Status</th><th>DateTime</th><th>Treat</th><th>Delete</th></tr>
-    <c:forEach var="apt" items="${list}"> 
+	<tr><th>BookId</th><th>PatientName</th><th>Feedback</th></tr>
+    <c:forEach var="msg" items="${messages}"> 
     <tr>
-    <td><a href="/prescription/${apt.bookId}">${apt.bookId}</a></td>
-    <td>${apt.doctorName}</td>
-    <td>${apt.patientName}</td>
-    <td>${apt.payment}</td>
-    <td>${apt.status}</td>
-    <td>${apt.dateTime}</td>
-    <td><button class="button button1"><a href="/doctor/treating/${apt.bookId}" >Treat</a></button></td>
-   <td><button class="button button1"><a href="/doctor/delete/${apt.bookId}" >Delete</a></button></td>
+    <td>${msg.bookId}</td>
+    <td>${msg.sender}</td>
+    <td>${msg.msg}</td>
     </tr>
     </c:forEach>
     </table>
